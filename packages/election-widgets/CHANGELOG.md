@@ -1,5 +1,12 @@
 # @readr-media/react-election-widgets Changelog
 
+## 2025-07-15, Version 1.1.2-alpha
+
+### Commits
+
+* \[[`7d67d04988`](https://github.com/nodejs/node/commit/7d67d04988)] - **feat(election-widgets)**: add legislator-recall condition (LinHeMa)
+* \[[`79e37b6491`](https://github.com/nodejs/node/commit/79e37b6491)] - **feat(election-widgets)**: add recall condition (LinHeMa)
+
 ## 2024-01-08, Version 1.1.1
 
 ### Commits
