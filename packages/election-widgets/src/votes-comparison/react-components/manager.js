@@ -315,6 +315,105 @@ export class CountyMayorDataManager extends CouncilMemberDataManager {
 
 export class LegislatorDataManager extends CouncilMemberDataManager {}
 
+export class RecallDataManager extends LegislatorDataManager {
+  constructor(data) {
+    super(data)
+    this.buildListHead()
+    this.buildListRows()
+  }
+
+  /**
+   * @override
+   * @returns {Head[]}
+   */
+  buildListHead() {
+    if (this.head.length > 0) return this.head
+    this.head = [
+      '地區',
+      '姓名',
+      '政黨',
+      '同意數',
+      '不同意數',
+      '同意率',
+      '不同意率',
+      '是否通過',
+    ]
+    return this.head
+  }
+
+  /**
+   *  @override
+   *  @param {Candidate & {agreeTks: number, disagreeTks: number, agreeRate: number, disagreeRate: number}} candidate
+   *  @returns {Cell[]}
+   */
+  buildRowFromCandidates(candidate) {
+    // This method creates all cells except for the 'district' one.
+    return [
+      // 姓名
+      this.buildNameCell([candidate?.name]),
+      // 政黨
+      this.buildPartyCell([candidate?.party]),
+      // 同意數
+      [{ label: candidate?.agreeTks?.toLocaleString() ?? '-' }],
+      // 不同意數
+      [{ label: candidate?.disagreeTks?.toLocaleString() ?? '-' }],
+      // 同意率
+      [
+        {
+          label:
+            typeof candidate?.agreeRate === 'number'
+              ? `${candidate?.agreeRate}%`
+              : '-',
+        },
+      ],
+      // 不同意率
+      [
+        {
+          label:
+            typeof candidate?.disagreeRate === 'number'
+              ? `${candidate?.disagreeRate}%`
+              : '-',
+        },
+      ],
+      // 是否通過
+      [
+        {
+          label: candidate?.adptVictor === 'Y' ? '通過' : '不通過',
+        },
+      ],
+    ]
+  }
+
+  /**
+   * @override
+   * @returns {Row[]}
+   */
+  buildListRows() {
+    if (this.rows && this.rows.length > 0) {
+      return this.rows
+    }
+    const newRows = []
+    const districts = this.data.districts || []
+
+    for (const district of districts) {
+      for (const [cIdx, candidate] of district.candidates.entries()) {
+        const row = {
+          id: `${district.districtName}-${candidate.name.label}`,
+          group: district.districtName,
+          cells: this.buildRowFromCandidates(candidate),
+        }
+
+        const areaLabel = cIdx === 0 ? district.districtName : ''
+        row.cells.unshift([{ label: areaLabel }])
+
+        newRows.push(row)
+      }
+    }
+    this.rows = newRows
+    return this.rows
+  }
+}
+
 export class LegislatorPartyDataManager extends DataManager {
   /**
    *  @override
@@ -854,6 +953,8 @@ export function dataManagerFactory() {
           return new ReferendumDataManager(data)
         case 'president':
           return new PresidentDataManager(data)
+        case 'legislator-recall':
+          return new RecallDataManager(data)
         default: {
           return new DataManager(data)
         }
