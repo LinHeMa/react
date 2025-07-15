@@ -29,13 +29,15 @@ const tabEnum = dirstrictTypeEnum
 const StyledTab = styled.div`
   cursor: pointer;
   font-weight: 700;
-  color: ${/**
-   *  @param {Object} props
-   *  @param {boolean} props.active
-   *  @param {Object} [props.theme]
-   */
-  (props) =>
-    props.active ? props.theme.tab.color.active : props.theme.tab.color.normal};
+  color: ${
+    /**
+     *  @param {Object} props
+     *  @param {boolean} props.active
+     *  @param {Object} [props.theme]
+     */
+    (props) =>
+      props.active ? props.theme.tab.color.active : props.theme.tab.color.normal
+  };
 
   ${(props) => {
     switch (props.theme?.device) {
@@ -464,6 +466,7 @@ export default function EVC({
     case 'legislator-mountainIndigenous':
     case 'legislator-plainIndigenous':
     case 'legislator-party':
+    case 'legislator-recall':
     case 'mayor':
     case 'referendum':
     case 'president': {

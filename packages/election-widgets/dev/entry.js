@@ -38,8 +38,9 @@ async function renderVotesComparison() {
     version: 'v2',
   })
 
-  const data = await ldr.loadCouncilMemberData({
-    year: '2018',
+  const data = await ldr.loadRecallData({
+    year: '2025',
+    recallType: 'recall',
     district: 'taipeiCity',
   })
 

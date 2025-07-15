@@ -244,6 +244,10 @@ export default class Loader {
         district = _district
         break
       }
+      case 'recall': {
+        district = 'all'
+        break
+      }
       default: {
         throw new Error(
           'subtype should be either "plainIndigenous", "mountainIndigenous", "party" or "district"'
@@ -268,6 +272,21 @@ export default class Loader {
     })
   }
 
+  /**
+   *  @param {Object} props
+   *  @param {string} props.year
+   *  @param {string} props.recallType
+   *  @param {string} props.district
+   *  @throws Error
+   *  @returns {Promise<void|LegislatorElection|LegislatorPartyElection|LegislatorIndigenousElection}
+   */
+  loadRecallData({ year, recallType = 'recall', district }) {
+    return this.loadData({
+      year,
+      type: recallType,
+      district: `district/${district}`,
+    })
+  }
   /**
    *  @param {Object} props
    *  @param {string} props.year
