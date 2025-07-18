@@ -332,10 +332,10 @@ export class RecallDataManager extends LegislatorDataManager {
       '地區',
       '姓名',
       '政黨',
-      '同意數',
-      '不同意數',
-      '同意率',
-      '不同意率',
+      '同意票數',
+      '不同意票數',
+      '選區人數同意率',
+      '選區人數不同意率',
       '是否通過',
     ]
     return this.head
@@ -347,6 +347,21 @@ export class RecallDataManager extends LegislatorDataManager {
    *  @returns {Cell[]}
    */
   buildRowFromCandidates(candidate) {
+    /**
+     *
+     * @param {string} adptVictor - is the candidate pass or not
+     * @returns {string}
+     */
+    const isPassed = (adptVictor) => {
+      switch (adptVictor) {
+        case 'Y':
+          return '通過'
+        case 'N':
+          return '不通過'
+        default:
+          ''
+      }
+    }
     // This method creates all cells except for the 'district' one.
     return [
       // 姓名
@@ -378,7 +393,7 @@ export class RecallDataManager extends LegislatorDataManager {
       // 是否通過
       [
         {
-          label: candidate?.adptVictor === 'Y' ? '通過' : '不通過',
+          label: isPassed(candidate?.adptVictor ?? ''),
         },
       ],
     ]
